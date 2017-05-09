@@ -12,11 +12,29 @@ class LoginSystem {
         this.userScreen = userScreen;
     }
 
-    public static void main(String[] args) {
-        // Student lok = (Student)(new Student()).register("lok", "password");
-        Student jack = (Student)(new Student()).register("jack", "password");
-        Student lok = (Student)(new UserFactory()).create("lok", "password", "Student");
+    public LoginSystem gotoUserScreen() {
+        this.loginScreen.setVisible(false);
+        this.userScreen.renderUI();
 
-        LoginSystem loginSystem = new LoginSystem(new LoginScreen(), new UserScreen());
+        return this;
+    }
+
+    public static void main(String[] args) {
+        UserFactory userFactory = new UserFactory();
+        UserManager userManager = new UserManager();
+
+        userManager
+            .register("lok", "password", "Student")
+            .register("jack", "password", "Student")
+            .register("qxWong", "teacherpassword", "Teacher");
+
+        LoginSystem loginSystem = new LoginSystem(
+            (new LoginScreen())
+                .setUserManager(userManager),
+            (new UserScreen())
+                .setUserManager(userManager)
+        );
+
+        loginSystem.loginScreen.renderUI();
     }
 }

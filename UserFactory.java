@@ -1,14 +1,16 @@
 class UserFactory {
 
-	public User create(String userName, String password, String userType) {
-		User user = (new User()).register("lok", "password");
+  public User create(String userName, String password, String userType) {
+    User user = new User();
 
-		if (userType == "Student") {
-			user = (Student)user;
-		} else if (userType == "Teacher") {
-			user = (Teacher)user;
-		}
+    if (userType == "Student") {
+      user = new Student();
+    } else if (userType == "Teacher") {
+      user = new Teacher();
+    }
 
-		return user;
-	}
+    user.register(userName, password);
+
+    return user;
+  }
 }
