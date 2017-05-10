@@ -3,17 +3,27 @@ import java.awt.event.*;
 
 class LoginScreen extends Frame {
 
+    /**
+     * @var UserManager
+     */
     protected UserManager userManager;
 
-    public LoginScreen() {
-
-    }
-
+    /**
+     * Setter method of userManager
+     *
+     * @param UserManager userManager
+     * @return LoginScreen
+     */
     public LoginScreen setUserManager(UserManager userManager) {
         this.userManager = userManager;
         return this;
     }
 
+    /**
+     * Rendering the UI components on frame
+     *
+     * @return LoginScreen
+     */
     public LoginScreen renderUI() {
         Label userNameLabel = new Label("User Name");
         Label passwordLabel = new Label("Password");
@@ -23,17 +33,27 @@ class LoginScreen extends Frame {
         passwordTextField.setEchoChar('*');
 
         Button userNameButton = new Button("Login");
+        Frame frame = this;
         userNameButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                System.out.printf("username: %s, password: %s\n", userNameTextField.getText(), passwordTextField.getText());
-                if (userManager.login(userNameTextField.getText(), passwordTextField.getText()) != null) {
-                    System.out.println("login success.");
+                User user = userManager.login(userNameTextField.getText(), passwordTextField.getText());
+                if (user != null) {
+                    String greetings = user.greetings();
+                    Dialog dialog = new Dialog(frame, "new");
+                    dialog.setSize(320, 200);
+                    dialog.add(new Label(greetings));
+                    dialog.setVisible(true);
                 } else {
-                    System.out.println("login fail.");
+                    frame.dispose();
                 }
             }
         });
         Button cancelButton = new Button("Cancel");
+        cancelButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                frame.dispose();
+            }
+        });
 
         this.add(userNameLabel);
         this.add(userNameTextField);

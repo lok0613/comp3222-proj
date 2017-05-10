@@ -3,38 +3,45 @@ import java.awt.event.*;
 
 class LoginSystem {
 
+    /**
+     * @var LoginScreen
+     */
     protected LoginScreen loginScreen;
 
-    protected UserScreen userScreen;
-
-    public LoginSystem(LoginScreen loginScreen, UserScreen userScreen) {
-        this.loginScreen = loginScreen;
-        this.userScreen = userScreen;
+    /**
+     * Getter method for loginScreen
+     *
+     * @return LoginScreen
+     */
+    public LoginScreen getLoginScreen() {
+        return this.loginScreen;
     }
 
-    public LoginSystem gotoUserScreen() {
-        this.loginScreen.setVisible(false);
-        this.userScreen.renderUI();
+    /**
+     * Setter method for loginScreen
+     *
+     * @param LoginScreen loginScreen
+     * @return LoginSystem
+     */
+    public LoginSystem setLoginScreen(LoginScreen loginScreen) {
+        this.loginScreen = loginScreen;
 
         return this;
     }
 
     public static void main(String[] args) {
-        UserFactory userFactory = new UserFactory();
         UserManager userManager = new UserManager();
 
         userManager
             .register("lok", "password", "Student")
             .register("jack", "password", "Student")
+            .register("william", "password", "Student")
             .register("qxWong", "teacherpassword", "Teacher");
 
-        LoginSystem loginSystem = new LoginSystem(
-            (new LoginScreen())
-                .setUserManager(userManager),
-            (new UserScreen())
-                .setUserManager(userManager)
-        );
+        LoginSystem loginSystem = (new LoginSystem())
+            .setLoginScreen((new LoginScreen())
+                .setUserManager(userManager));
 
-        loginSystem.loginScreen.renderUI();
+        loginSystem.getLoginScreen().renderUI();
     }
 }
